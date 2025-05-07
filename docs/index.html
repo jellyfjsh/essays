@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>essays</title>
+  <style>
+    .dateRead {
+      color: gray;
+      font-size: 0.8em;
+    }
+    .title {
+      font-style: italic;
+    }
+    .yearOriginal {
+      color: lightgray;
+    }
+    summary {
+      list-style: none;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    .review {
+      background-color: #dbdbdb;
+    }
+    
+  </style>
+</head>
+<body>
+    <div class="essay-list" id="essay-list">
+    beep boop beep bop beep beep boop beeboobeeboobeeboobeeboobeeboo beep beeeeeep beep
+  </div>
+
+<script>
+  async function loadEssays() {
+  try {
+    console.log("Fetching essays.json...");
+    const response = await fetch('essays.json');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const essays = await response.json();
+    console.log("Essays loaded:", essays);
+
+    const essayList = document.getElementById('essay-list');
+
+    essayList.innerHTML = essays.map(essay => `
+      <div class="essay-item">
+        <details>
+          <summary>
+            <span class="dateRead">${essay.dateRead}</span>
+            <span class="title">${essay.title}</span> – 
+            <span class="author">${essay.author}</span>, 
+            <span class="yearPublished">${essay.yearPublished}</span>
+          </summary>
+          <span class="review">${essay.review}</span>
+        </details>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error("Error loading essay:", error);
+    document.getElementById('essay-list').innerHTML = `<p style="color: red;">Failed to load essays. Check the console for errors.</p>`;
+  }
+}
+
+loadEssays();
+
+</script>
+  
+</body>
+</html>
 
